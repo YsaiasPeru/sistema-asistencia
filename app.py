@@ -599,18 +599,24 @@ def restaurar_backup(filename):
 
 
 # ======================================================
+# INIT DB (Render + local)
+# ======================================================
+
+os.makedirs("static/uploads", exist_ok=True)
+
+with app.app_context():
+    db.create_all()
+
+    # crear usuario admin automático
+    if not User.query.filter_by(username="admin").first():
+        db.session.add(User(username="admin", password="admin"))
+        db.session.commit()
+
+
+# ======================================================
 # MAIN
 # ======================================================
 
 if __name__ == "__main__":
-
-    os.makedirs("static/uploads", exist_ok=True)
-
-    with app.app_context():
-        db.create_all()
-
-        if not User.query.first():
-            db.session.add(User(username="admin", password="admin"))
-            db.session.commit()
-
     app.run(debug=True)
+
