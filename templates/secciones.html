@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h3 class="mb-4">
+<i class="bi bi-diagram-3"></i>
+Secciones - {{ grado.nombre }}
+</h3>
+
+<div class="card shadow mb-4">
+<div class="card-body">
+
+<form method="POST" class="row g-2">
+
+<div class="col-md-8">
+<input type="text" name="nombre" class="form-control" placeholder="Ej: A, B, C" required>
+</div>
+
+<div class="col-md-4">
+<button class="btn btn-primary w-100">
+<i class="bi bi-plus-circle"></i> Agregar
+</button>
+</div>
+
+</form>
+
+</div>
+</div>
+
+
+<div class="row g-3">
+
+{% for s in secciones %}
+<div class="col-md-3">
+
+<a href="/alumnos/{{s.id}}" class="text-decoration-none">
+
+<div class="card shadow text-center hover-card">
+
+<div class="card-body">
+
+<i class="bi bi-people fs-1 text-primary"></i>
+<h5 class="mt-2">Sección {{ s.nombre }}</h5>
+<small>Ver alumnos</small>
+
+</div>
+
+</div>
+
+</a>
+
+</div>
+{% endfor %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h3 class="mb-4">
+<i class="bi bi-mortarboard"></i> Grados
+</h3>
+
+<div class="card shadow mb-4">
+<div class="card-body">
+
+<form method="POST" class="row g-2">
+
+<div class="col-md-8">
+<input type="text" name="nombre" class="form-control" placeholder="Ej: 1° Primaria" required>
+</div>
+
+<div class="col-md-4">
+<button class="btn btn-primary w-100">
+<i class="bi bi-plus-circle"></i> Agregar
+</button>
+</div>
+
+</form>
+
+</div>
+</div>
+
+
+<div class="row g-3">
+
+{% for g in grados %}
+<div class="col-md-3">
+
+<a href="/secciones/{{g.id}}" class="text-decoration-none">
+
+<div class="card shadow text-center hover-card">
+
+<div class="card-body">
+
+<i class="bi bi-folder fs-1 text-success"></i>
+<h5 class="mt-2">{{ g.nombre }}</h5>
+<small>Entrar</small>
+
+</div>
+
+</div>
+
+</a>
+
+</div>
+{% endfor %}
+
+</div>
+
+<style>
+.hover-card:hover{
+transform:scale(1.05);
+transition:0.2s;
+}
+</style>
+
+{% endblock %}

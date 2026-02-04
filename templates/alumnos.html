@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h3 class="mb-3">
+<i class="bi bi-people"></i>
+Alumnos - Sección {{ seccion.nombre }}
+</h3>
+
+
+<div class="card shadow mb-4">
+<div class="card-body">
+
+<form method="POST" enctype="multipart/form-data" class="row g-2">
+
+<div class="col-md-4">
+<input name="nombre" class="form-control" placeholder="Nombre" required>
+</div>
+
+<div class="col-md-3">
+<input name="dni" class="form-control" placeholder="DNI">
+</div>
+
+<div class="col-md-3">
+<input type="file" name="foto" class="form-control">
+</div>
+
+<div class="col-md-2">
+<button class="btn btn-success w-100">
+Agregar
+</button>
+</div>
+
+</form>
+
+</div>
+</div>
+
+
+<div class="card shadow">
+
+<table class="table table-bordered align-middle text-center">
+
+<tr class="table-dark">
+<th>Foto</th>
+<th>Nombre</th>
+<th>DNI</th>
+<th>Acciones</th>
+</tr>
+
+{% for a in alumnos %}
+<tr>
+
+<td>
+{% if a.foto %}
+<img src="/static/uploads/{{a.foto}}" width="50">
+{% endif %}
+</td>
+
+<td>{{a.nombre}}</td>
+<td>{{a.dni}}</td>
+
+<td>
+<a href="/asistencia/{{seccion.id}}" class="btn btn-sm btn-primary">
+Asistencia
+</a>
+</td>
+
+</tr>
+{% endfor %}
+
+</table>
+
+</div>
+
+{% endblock %}

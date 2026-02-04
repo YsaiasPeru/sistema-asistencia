@@ -1,0 +1,244 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h3 class="mb-4">
+<i class="bi bi-bar-chart"></i>
+Reporte de Asistencia
+</h3>
+
+
+<!-- ================================================= -->
+<!-- FILTROS -->
+<!-- ================================================= -->
+
+<div class="card shadow border-0 mb-4">
+<div class="card-body">
+
+<form method="GET" class="row g-3 align-items-end">
+
+<!-- FECHA -->
+<div class="col-md-2">
+<label class="form-label">Fecha base</label>
+<input type="date"
+       name="fecha"
+       value="{{request.args.get('fecha','')}}"
+       class="form-control">
+</div>
+
+<!-- PERIODO -->
+<div class="col-md-2">
+<label class="form-label">Periodo</label>
+<select name="tipo" class="form-select">
+
+<option value="dia" {% if request.args.get('tipo')=='dia' %}selected{% endif %}>Día</option>
+<option value="semana" {% if request.args.get('tipo')=='semana' %}selected{% endif %}>Semana</option>
+<option value="mes" {% if request.args.get('tipo')=='mes' %}selected{% endif %}>Mes</option>
+<option value="anio" {% if request.args.get('tipo')=='anio' %}selected{% endif %}>Año</option>
+
+</select>
+</div>
+
+<!-- GRADO -->
+<div class="col-md-2">
+<label class="form-label">Grado</label>
+<select name="grado" id="gradoSelect" class="form-select">
+
+<option value="">Todos</option>
+
+{% for g in grados %}
+<option value="{{g.id}}"
+{% if request.args.get('grado')|int == g.id %}selected{% endif %}>
+{{ g.nombre }}
+</option>
+{% endfor %}
+
+</select>
+</div>
+
+<!-- SECCION -->
+<div class="col-md-2">
+<label class="form-label">Sección</label>
+<select name="seccion" id="seccionSelect" class="form-select">
+
+<option value="">Todas</option>
+
+{% for s in secciones %}
+<option value="{{s.id}}"
+{% if request.args.get('seccion')|int == s.id %}selected{% endif %}>
+{{ s.nombre }}
+</option>
+{% endfor %}
+
+</select>
+</div>
+
+<!-- PROFESORA -->
+<div class="col-md-2">
+<label class="form-label">Profesora</label>
+<input name="profesora"
+       value="{{request.args.get('profesora','')}}"
+       class="form-control">
+</div>
+
+<!-- DNI -->
+<div class="col-md-2">
+<label class="form-label">DNI</label>
+<input name="dni_prof"
+       value="{{request.args.get('dni_prof','')}}"
+       class="form-control">
+</div>
+
+<!-- CURSO -->
+<div class="col-md-2">
+<label class="form-label">Curso</label>
+<input name="curso"
+       value="{{request.args.get('curso','')}}"
+       class="form-control">
+</div>
+
+<!-- BOTONES -->
+<div class="col-md-3 d-grid gap-2">
+
+<button class="btn btn-primary">
+<i class="bi bi-search"></i> Filtrar
+</button>
+
+<a class="btn btn-danger"
+href="/reporte_pdf?{{ request.query_string.decode() }}">
+<i class="bi bi-file-earmark-pdf"></i> Exportar PDF
+</a>
+
+</div>
+
+</form>
+
+</div>
+</div>
+
+
+<!-- ================================================= -->
+<!-- RESUMEN -->
+<!-- ================================================= -->
+
+<div class="alert alert-info shadow-sm">
+
+Mostrando registros desde
+<b>{{inicio}}</b> hasta <b>{{fin}}</b>
+
+<br>
+
+Total registros:
+<b>{{ registros|length }}</b>
+
+</div>
+
+
+
+<!-- ================================================= -->
+<!-- TABLA -->
+<!-- ================================================= -->
+
+<div class="card shadow border-0">
+
+<div class="table-responsive">
+
+<table class="table table-hover align-middle text-center mb-0">
+
+<thead class="table-dark">
+<tr>
+<th>Fecha</th>
+<th>Foto</th>
+<th>Alumno</th>
+<th>DNI</th>
+<th>Estado</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for r in registros %}
+
+<tr>
+
+<td>{{ r.fecha }}</td>
+
+<td>
+{% if r.alumno.foto %}
+<img src="/static/uploads/{{r.alumno.foto}}"
+     width="45"
+     height="45"
+     class="rounded-circle">
+{% else %}
+<div class="bg-secondary rounded-circle"
+     style="width:45px;height:45px"></div>
+{% endif %}
+</td>
+
+<td class="fw-semibold text-start ps-3">
+{{ r.alumno.nombre }}
+</td>
+
+<td>{{ r.alumno.dni }}</td>
+
+<td>
+
+{% if r.estado == 'P' %}
+<span class="badge bg-success">Presente</span>
+
+{% elif r.estado == 'F' %}
+<span class="badge bg-danger">Falta</span>
+
+{% elif r.estado == 'J' %}
+<span class="badge bg-primary">Justificada</span>
+
+{% elif r.estado == 'T' %}
+<span class="badge bg-warning text-dark">Tardanza</span>
+
+{% elif r.estado == 'U' %}
+<span class="badge bg-dark">T. Justificada</span>
+{% endif %}
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+</table>
+
+</div>
+</div>
+
+
+
+<!-- ================================================= -->
+<!-- LEYENDA -->
+<!-- ================================================= -->
+
+<div class="card mt-4 p-3 shadow-sm">
+
+<b>Leyenda:</b><br>
+
+<span class="badge bg-success">Presente</span>
+<span class="badge bg-danger ms-2">Falta</span>
+<span class="badge bg-primary ms-2">Justificada</span>
+<span class="badge bg-warning text-dark ms-2">Tardanza</span>
+<span class="badge bg-dark ms-2">T. Justificada</span>
+
+</div>
+
+
+
+<!-- ================================================= -->
+<!-- JS FILTRO SECCION AUTOMATICO -->
+<!-- ================================================= -->
+
+<script>
+document.getElementById("gradoSelect").addEventListener("change", function(){
+    this.form.submit();
+});
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema Asistencia</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        body.dark {
+            background: #121212;
+            color: white;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            height: 100vh;
+            width: 240px;
+            position: fixed;
+            left: 0;
+            top: 0;
+        }
+
+        /* CONTENIDO */
+        .content {
+            margin-left: 250px;
+        }
+
+        /* DARK MODE */
+        body.dark .card,
+        body.dark .table,
+        body.dark .navbar,
+        body.dark .sidebar {
+            background-color: #1e1e1e !important;
+            color: white;
+        }
+
+        body.dark .nav-link {
+            color: #ddd !important;
+        }
+
+        body.dark .nav-link:hover {
+            color: white !important;
+        }
+
+        .nav-link {
+            border-radius: 8px;
+            margin-bottom: 5px;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+        }
+    </style>
+</head>
+
+<body id="body">
+
+<!-- ====================================================== -->
+<!-- SIDEBAR -->
+<!-- ====================================================== -->
+
+<div class="sidebar bg-dark text-white p-3 shadow">
+
+    <h4 class="text-center mb-4">📚 Asistencia</h4>
+
+    <ul class="nav flex-column">
+
+        <!-- DASHBOARD -->
+        <li>
+            <a href="/dashboard" class="nav-link text-white">
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+        </li>
+
+        <!-- GRADOS / SECCIONES / ALUMNOS -->
+        <li>
+            <a href="/grados" class="nav-link text-white">
+                <i class="bi bi-diagram-3"></i> Grados y Secciones
+            </a>
+        </li>
+
+        <!-- ASISTENCIA -->
+        <li>
+            <a href="/asistencia" class="nav-link text-white">
+                <i class="bi bi-check2-square"></i> Asistencia
+            </a>
+        </li>
+
+        <!-- REPORTES -->
+        <li>
+            <a href="/reporte" class="nav-link text-white">
+                <i class="bi bi-bar-chart"></i> Reportes
+            </a>
+        </li>
+
+        <!-- CURSOS / PLANIFICACIÓN -->
+        <li>
+            <a href="/cursos" class="nav-link text-white">
+                <i class="bi bi-journal-bookmark"></i> Cursos
+            </a>
+        </li>
+
+        <hr class="text-secondary">
+
+        <!-- SALIR -->
+        <li>
+            <a href="/logout" class="nav-link text-danger">
+                <i class="bi bi-box-arrow-right"></i> Salir
+            </a>
+        </li>
+
+    </ul>
+</div>
+
+
+<!-- ====================================================== -->
+<!-- CONTENIDO PRINCIPAL -->
+<!-- ====================================================== -->
+
+<div class="content">
+
+    <!-- NAVBAR SUPERIOR -->
+    <nav class="navbar navbar-light bg-light shadow-sm px-4">
+
+        <span class="fw-bold">
+            Sistema de Asistencia Escolar
+        </span>
+
+        <button onclick="toggleTheme()" class="btn btn-outline-secondary btn-sm">
+            🌙 / ☀️
+        </button>
+
+    </nav>
+
+
+    <!-- MENSAJES FLASH -->
+    <div class="container-fluid p-4">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{category}} alert-dismissible fade show">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+
+    </div>
+</div>
+
+
+<!-- ====================================================== -->
+<!-- JS -->
+<!-- ====================================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+function toggleTheme(){
+    document.body.classList.toggle("dark");
+}
+</script>
+
+</body>
+</html>

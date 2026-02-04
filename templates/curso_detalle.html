@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h3>Curso: {{ curso.nombre }}</h3>
+
+<form method="POST" class="row g-2 mb-4">
+<div class="col-md-10">
+<input name="nombre" class="form-control" placeholder="Nueva competencia">
+</div>
+<div class="col-md-2 d-grid">
+<button class="btn btn-primary">Agregar</button>
+</div>
+</form>
+
+{% for comp in competencias %}
+
+<div class="card shadow-sm p-3 mb-3">
+
+<h5>{{ comp.nombre }}</h5>
+
+<form action="/add_capacidad/{{comp.id}}" method="POST" class="d-flex gap-2 mb-2">
+<input name="nombre" class="form-control" placeholder="Nueva capacidad">
+<button class="btn btn-success btn-sm">+</button>
+</form>
+
+<ul class="list-group">
+
+{% for cap in comp.capacidades %}
+<li class="list-group-item d-flex justify-content-between">
+{{ cap.nombre }}
+<a href="/del_capacidad/{{cap.id}}" class="btn btn-danger btn-sm">x</a>
+</li>
+{% endfor %}
+
+</ul>
+
+</div>
+
+{% endfor %}
+
+{% endblock %}

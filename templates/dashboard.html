@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h3 class="mb-4">
+<i class="bi bi-speedometer2"></i>
+Panel de Control
+</h3>
+
+<div class="row g-4">
+
+<!-- ALUMNOS -->
+<div class="col-md-3">
+<a href="/grados" class="text-decoration-none">
+<div class="card shadow text-center hover-card h-100">
+<div class="card-body">
+<i class="bi bi-people fs-1 text-primary"></i>
+<h6 class="mt-2">Total Alumnos</h6>
+<h2>{{ total_alumnos }}</h2>
+</div>
+</div>
+</a>
+</div>
+
+<!-- CURSOS -->
+<div class="col-md-3">
+<a href="/cursos" class="text-decoration-none">
+<div class="card shadow text-center hover-card h-100">
+<div class="card-body">
+<i class="bi bi-journal-bookmark fs-1 text-success"></i>
+<h6 class="mt-2">Cursos</h6>
+<h2>{{ total_cursos }}</h2>
+</div>
+</div>
+</a>
+</div>
+
+<!-- RESET SISTEMA -->
+<div class="col-md-3">
+<div class="card shadow text-center border-danger hover-card h-100">
+<div class="card-body d-flex flex-column justify-content-center">
+
+<i class="bi bi-exclamation-triangle fs-1 text-danger"></i>
+<h6 class="mt-2 text-danger">Reiniciar sistema</h6>
+
+<button class="btn btn-danger btn-sm mt-2"
+        data-bs-toggle="modal"
+        data-bs-target="#resetModal">
+Reiniciar
+</button>
+
+</div>
+</div>
+</div>
+
+<!-- BACKUPS -->
+<div class="col-md-6">
+<div class="card shadow border-warning h-100">
+<div class="card-body">
+
+<h6 class="text-warning">
+<i class="bi bi-hdd-stack"></i> Restaurar Backup
+</h6>
+
+{% if backups %}
+
+<ul class="list-group mt-2 small">
+
+{% for b in backups %}
+<li class="list-group-item d-flex justify-content-between align-items-center">
+
+{{ b }}
+
+<button class="btn btn-sm btn-warning"
+        data-bs-toggle="modal"
+        data-bs-target="#restore{{ loop.index }}">
+Restaurar
+</button>
+
+</li>
+
+<!-- MODAL RESTAURAR -->
+<div class="modal fade" id="restore{{ loop.index }}">
+<div class="modal-dialog">
+<div class="modal-content">
+
+<div class="modal-header bg-warning">
+<h5 class="modal-title">Restaurar Backup</h5>
+</div>
+
+<form method="POST" action="/restaurar_backup/{{ b }}">
+<div class="modal-body">
+
+<p>Se restaurará:</p>
+<b>{{ b }}</b>
+
+<input type="password"
+       name="password"
+       class="form-control mt-3"
+       placeholder="Contraseña admin"
+       required>
+
+</div>
+
+<div class="modal-footer">
+<button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+<button class="btn btn-warning">Restaurar</button>
+</div>
+
+</form>
+
+</div>
+</div>
+</div>
+
+{% endfor %}
+
+</ul>
+
+{% else %}
+<p class="text-muted mt-2">No hay backups aún</p>
+{% endif %}
+
+</div>
+</div>
+</div>
+
+</div>
+
+
+<!-- MODAL RESET -->
+<div class="modal fade" id="resetModal">
+<div class="modal-dialog">
+<div class="modal-content">
+
+<div class="modal-header bg-danger text-white">
+<h5 class="modal-title">
+<i class="bi bi-shield-lock"></i> Reiniciar Sistema
+</h5>
+</div>
+
+<form action="/reset_sistema" method="POST">
+
+<div class="modal-body">
+
+<div class="alert alert-danger">
+Esta acción eliminará TODOS los datos.<br>
+Se creará un backup automático.
+</div>
+
+<input type="password"
+       name="password"
+       class="form-control"
+       placeholder="Contraseña admin"
+       required>
+
+</div>
+
+<div class="modal-footer">
+<button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+<button class="btn btn-danger">Reiniciar todo</button>
+</div>
+
+</form>
+
+</div>
+</div>
+</div>
+
+<style>
+.hover-card:hover{
+transform: scale(1.05);
+transition: 0.2s;
+cursor:pointer;
+}
+</style>
+
+{% endblock %}

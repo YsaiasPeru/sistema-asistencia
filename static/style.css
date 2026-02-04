@@ -1,0 +1,11 @@
+body.dark {
+    background:#222;
+    color:white;
+}
+
+.dark .panel,
+.dark .table,
+.dark .navbar {
+    background:#333;
+    color:white;
+}

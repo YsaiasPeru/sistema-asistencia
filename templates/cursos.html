@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h3 class="mb-4">Gestión de Cursos</h3>
+
+<form method="POST" class="row g-2 mb-4">
+<div class="col-md-10">
+<input name="nombre" class="form-control" placeholder="Nuevo curso" required>
+</div>
+<div class="col-md-2 d-grid">
+<button class="btn btn-primary">Agregar</button>
+</div>
+</form>
+
+
+<div class="row g-3">
+
+{% for c in cursos %}
+<div class="col-md-4">
+
+<div class="card shadow-sm p-3">
+
+<h5>{{ c.nombre }}</h5>
+
+<div class="d-flex gap-2">
+<a href="/curso_detalle/{{c.id}}" class="btn btn-success btn-sm">Abrir</a>
+<a href="/eliminar_curso/{{c.id}}" class="btn btn-danger btn-sm">Eliminar</a>
+</div>
+
+</div>
+
+</div>
+{% endfor %}
+
+</div>
+
+{% endblock %}

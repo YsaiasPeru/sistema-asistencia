@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h3 class="mb-4">
+<i class="bi bi-check2-square"></i>
+Asistencia - {{ hoy }}
+</h3>
+
+
+<!-- ====================================================== -->
+<!-- FILTROS -->
+<!-- ====================================================== -->
+
+<div class="card shadow-sm p-3 mb-4">
+
+<form class="row g-3">
+
+<div class="col-md-4">
+<label class="form-label">Grado</label>
+<select name="grado" class="form-select" onchange="this.form.submit()">
+
+<option value="">-- Seleccionar --</option>
+
+{% for g in grados %}
+<option value="{{g.id}}" {% if grado_id==g.id %}selected{% endif %}>
+{{ g.nombre }}
+</option>
+{% endfor %}
+
+</select>
+</div>
+
+
+<div class="col-md-4">
+<label class="form-label">Sección</label>
+<select name="seccion" class="form-select" onchange="this.form.submit()">
+
+<option value="">-- Seleccionar --</option>
+
+{% for s in secciones %}
+<option value="{{s.id}}" {% if seccion_id==s.id %}selected{% endif %}>
+{{ s.nombre }}
+</option>
+{% endfor %}
+
+</select>
+</div>
+
+</form>
+
+</div>
+
+
+
+{% if alumnos %}
+
+<!-- ====================================================== -->
+<!-- TABLA MODERNA -->
+<!-- ====================================================== -->
+
+<form method="POST">
+
+<div class="card shadow">
+
+<div class="table-responsive">
+
+<table class="table align-middle text-center mb-0">
+
+<thead class="table-dark">
+<tr>
+<th>#</th>
+<th>Foto</th>
+<th>Alumno</th>
+<th>DNI</th>
+<th>Estado</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for a in alumnos %}
+
+<tr>
+
+<td>{{ loop.index }}</td>
+
+<td>
+{% if a.foto %}
+<img src="/static/uploads/{{a.foto}}" width="45" height="45" class="rounded-circle">
+{% else %}
+<div class="bg-secondary rounded-circle" style="width:45px;height:45px"></div>
+{% endif %}
+</td>
+
+<td class="fw-semibold text-start">{{ a.nombre }}</td>
+
+<td>{{ a.dni }}</td>
+
+<td>
+
+<div class="btn-group" role="group">
+
+<input type="radio" class="btn-check" name="{{a.id}}" value="P" id="p{{a.id}}" checked>
+<label class="btn btn-success btn-sm" for="p{{a.id}}">P</label>
+
+<input type="radio" class="btn-check" name="{{a.id}}" value="F" id="f{{a.id}}">
+<label class="btn btn-danger btn-sm" for="f{{a.id}}">F</label>
+
+<input type="radio" class="btn-check" name="{{a.id}}" value="J" id="j{{a.id}}">
+<label class="btn btn-primary btn-sm" for="j{{a.id}}">J</label>
+
+<input type="radio" class="btn-check" name="{{a.id}}" value="T" id="t{{a.id}}">
+<label class="btn btn-warning btn-sm" for="t{{a.id}}">T</label>
+
+<input type="radio" class="btn-check" name="{{a.id}}" value="U" id="u{{a.id}}">
+<label class="btn btn-dark btn-sm" for="u{{a.id}}">U</label>
+
+</div>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+</table>
+
+</div>
+</div>
+
+
+
+<!-- BOTONES -->
+<div class="mt-4 d-flex gap-2">
+
+<button class="btn btn-primary">
+<i class="bi bi-save"></i> Guardar asistencia
+</button>
+
+<button onclick="window.print()" type="button" class="btn btn-secondary">
+<i class="bi bi-printer"></i> Imprimir
+</button>
+
+</div>
+
+</form>
+
+{% else %}
+
+<div class="alert alert-info shadow-sm">
+Seleccione grado y sección para comenzar.
+</div>
+
+{% endif %}
+
+
+
+<!-- ====================================================== -->
+<!-- LEYENDA -->
+<!-- ====================================================== -->
+
+<div class="card mt-4 p-3 shadow-sm small">
+
+<b>Leyenda:</b><br>
+
+<span class="badge bg-success">P</span> Presente
+<span class="badge bg-danger ms-2">F</span> Falta
+<span class="badge bg-primary ms-2">J</span> Justificada
+<span class="badge bg-warning text-dark ms-2">T</span> Tardanza
+<span class="badge bg-dark ms-2">U</span> Tardanza Justificada
+
+</div>
+
+{% endblock %}
