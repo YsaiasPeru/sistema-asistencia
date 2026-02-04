@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
+    <link rel="manifest" href="/static/manifest.json">
+<meta name="theme-color" content="#2563eb">
+
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/static/sw.js');
+}
+</script>
+
+
     <meta charset="UTF-8">
     <title>Sistema Asistencia</title>
 
